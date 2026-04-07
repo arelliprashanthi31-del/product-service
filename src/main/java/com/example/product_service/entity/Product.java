@@ -13,5 +13,6 @@ public class Product {
 
     private String name;
     private double price;
-    private int stock; // 🔥 VERY IMPORTANT
+    private int stock;
+    private int reservedStock;
 }

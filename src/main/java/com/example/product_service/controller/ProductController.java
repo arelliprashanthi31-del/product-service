@@ -1,5 +1,7 @@
 package com.example.product_service.controller;
 
+import com.example.product_service.dto.OrderRequest;
+import com.example.product_service.dto.ReserveResponse;
 import com.example.product_service.entity.Product;
 import com.example.product_service.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ public class ProductController {
 
     @PostMapping
     public Product create(@RequestBody Product product) {
+        product.setReservedStock(0);
         return service.save(product);
     }
 
@@ -37,5 +40,22 @@ public class ProductController {
     @PutMapping("/{id}/reduce")
     public Product reduceStock(@PathVariable Long id, @RequestParam int quantity) {
         return service.reduceStock(id, quantity);
+    }
+
+    @PostMapping("/reserve")
+    public List<ReserveResponse> reserve(@RequestBody OrderRequest request) {
+        return service.reserveStock(request);
+    }
+
+    @PostMapping("/confirm")
+    public String confirm(@RequestBody OrderRequest request) {
+        service.confirmStock(request);
+        return "Stock confirmed";
+    }
+
+    @PostMapping("/release")
+    public String release(@RequestBody OrderRequest request) {
+        service.releaseStock(request);
+        return "Stock released";
     }
 }
